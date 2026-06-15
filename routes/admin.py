@@ -31,50 +31,51 @@ def admin_dashboard(db: Session = Depends(get_db)) -> str:
         for run in runs
     )
     next_run_text = next_run.isoformat() if next_run else "Not scheduled"
-return """
-<html>
-<head>
-<title>AI Research Digest</title>
-</head>
-<body style="font-family:Arial;padding:40px;max-width:600px;margin:auto;">
-<h1>AI Research Digest</h1>
+    
+    return """
+    <html>
+    <head>
+    <title>AI Research Digest</title>
+    </head>
+    <body style="font-family:Arial;padding:40px;max-width:600px;margin:auto;">
+    <h1>AI Research Digest</h1>
 
-<p>Receive curated AI research papers directly in your inbox.</p>
+    <p>Receive curated AI research papers directly in your inbox.</p>
 
-<form id="subscribeForm">
-<input type="text" id="name" placeholder="Your Name" required style="padding:10px;width:100%;margin-bottom:10px;">
-<input type="email" id="email" placeholder="Your Email" required style="padding:10px;width:100%;margin-bottom:10px;">
+    <form id="subscribeForm">
+    <input type="text" id="name" placeholder="Your Name" required style="padding:10px;width:100%;margin-bottom:10px;">
+    <input type="email" id="email" placeholder="Your Email" required style="padding:10px;width:100%;margin-bottom:10px;">
 
-<button type="submit" style="padding:12px 20px;">
-Subscribe
-</button>
-</form>
+    <button type="submit" style="padding:12px 20px;">
+    Subscribe
+    </button>
+    </form>
 
-<p id="msg"></p>
+    <p id="msg"></p>
 
-<script>
-document.getElementById("subscribeForm").onsubmit = async (e) => {
-e.preventDefault();
+    <script>
+    document.getElementById("subscribeForm").onsubmit = async (e) => {
+    e.preventDefault();
 
-await fetch("/api/subscribers", {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-name: document.getElementById("name").value,
-email: document.getElementById("email").value
-})
-});
+    await fetch("/api/subscribers", {
+    method: "POST",
+    headers: {
+    "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value
+    })
+    });
 
-document.getElementById("msg").innerText =
-"Subscribed successfully!";
-};
-</script>
+    document.getElementById("msg").innerText =
+    "Subscribed successfully!";
+    };
+    </script>
 
-</body>
-</html>
-"""
+    </body>
+    </html>
+    """
 
 @router.post("/api/trigger")
 def trigger_pipeline(db: Session = Depends(get_db)) -> dict:
